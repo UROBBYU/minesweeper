@@ -67,6 +67,7 @@ function removeMine(x, y) {
         }
         table[x][y].data.value = v;
         updateCell(table[x][y]);
+        return true;
     }
 }
 
@@ -157,15 +158,50 @@ function createCell(x, y, options) {
     let redTable = [];
     let zeroList = [];
     let octalList = [];
+    let maxTime = 0;
 
     function updateTable() {
         for (let x = 0; x < field.sizeX; x++) {
             for (let y = 0; y < field.sizeY; y++) {
-                if (redTable[x][y] !== null) setTimeout(() => {
-                    redrawCell(x, y);
-                }, redTable[x][y]);
+                if (redTable[x][y] !== null) {
+                    setTimeout(() => {
+                        redrawCell(x, y);
+                    }, redTable[x][y]);
+                    if (maxTime < redTable[x][y]) maxTime = redTable[x][y];
+                }
             }
         }
+        setTimeout(() => {
+            if (mines === hidden) {
+                for (const arr of table) {
+                    for (const cell of arr) {
+                        cell.elem.onclick = null;
+                        cell.elem.oncontextmenu = null;
+                    }
+                }
+                let time = Date.now() - field.time;
+                let mins = Math.floor(time / 1000 / 60);
+                let secs = Math.floor(time / 1000) - mins * 60;
+                let millis = Math.floor((time - (mins * 60 + secs) * 1000) / 100);
+                mins = (mins.toString().length == 1 ? '0' : '') + mins;
+                secs = (secs.toString().length == 1 ? '0' : '') + secs;
+                millis = (millis.toString().length == 1 ? '0' : '') + millis;
+                msgBox.build(
+                    ['lime', '🎉Win!🎉'],
+                    ['lime', `Size: ${field.sizeX}x${field.sizeX}`,
+                     'yellow', `Time: ${mins}:${secs}:${millis}`,
+                     'red', `Difficulty: ${field.difficulty}`],
+                    [{
+                        type: 'button',
+                        text: 'restart',
+                        color: '#ffbf00',
+                        subcolor: '#ea9700',
+                        action: function() { window.location.reload(); }
+                    }]
+                );
+                msgBox.style.display = '';
+            }
+        }, maxTime + 50);
     }
 
     function checkCell(x, y, type, del = 0) {
@@ -229,9 +265,9 @@ function createCell(x, y, options) {
     function clickL() {
         if (table[x][y].data.type === 'block') {
             if (!table.started) {
-                removeMine(x, y);
+                if (removeMine(x, y)) mines--;
                 for(let [a, b] of octangler(x, y)) {
-                    if (cellExists(a, b)) removeMine(a, b);
+                    if (cellExists(a, b)) if (removeMine(a, b)) mines--;
                 }
                 
                 table.started = true;
@@ -273,35 +309,6 @@ function createCell(x, y, options) {
             } else {
                 table[x][y].data.type = 'value';
                 redrawAdjusted(x, y, 'octal');
-            }
-            if (mines === hidden) {
-                for (const arr of table) {
-                    for (const cell of arr) {
-                        cell.elem.onclick = null;
-                        cell.elem.oncontextmenu = null;
-                    }
-                }
-                let time = Date.now() - field.time;
-                let mins = Math.floor(time / 1000 / 60);
-                let secs = Math.floor(time / 1000) - mins * 60;
-                let millis = Math.floor((time - (mins * 60 + secs) * 1000) / 100);
-                mins = (mins.toString().length == 1 ? '0' : '') + mins;
-                secs = (secs.toString().length == 1 ? '0' : '') + secs;
-                millis = (millis.toString().length == 1 ? '0' : '') + millis;
-                msgBox.build(
-                    ['lime', '🎉Win!🎉'],
-                    ['lime', `Size: ${field.sizeX}x${field.sizeX}`,
-                     'yellow', `Time: ${mins}:${secs}:${millis}`,
-                     'red', `Difficulty: ${field.difficulty}`],
-                    [{
-                        type: 'button',
-                        text: 'restart',
-                        color: '#ffbf00',
-                        subcolor: '#ea9700',
-                        action: function() { window.location.reload(); }
-                    }]
-                );
-                msgBox.style.display = '';
             }
         }
     }

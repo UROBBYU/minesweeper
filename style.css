@@ -12,6 +12,7 @@
 body {
     margin: 0;
     background-color: #191919;
+    user-select: none;
 }
 
 #field {
@@ -63,7 +64,6 @@ body {
 	font-weight: bold;
     color: #d6d6d6;
     line-height: var(--cell-size);
-    user-select: none;
 }
 
 .center {
@@ -79,7 +79,6 @@ body {
     text-shadow: 0 0 0 #191919;
 	font-size: calc(var(--cell-size) - var(--cell-border-size) * 2 - 16px);
     line-height: calc(var(--cell-size) - 8px);
-    user-select: none;
 }
 
 .center.sink {
@@ -260,7 +259,6 @@ body {
 	font-weight: bold;
 	padding: var(--min);
 	font-family: sans-serif;
-    user-select: none;
 }
 
 #input > *.label {
