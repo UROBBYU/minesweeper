@@ -1,3 +1,5 @@
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js', '/')
+
 let field = document.getElementById('field');
 
 let msgBox = document.getElementById('hud');
