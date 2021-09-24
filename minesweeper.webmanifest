@@ -4,41 +4,19 @@
     "description": "PWA incarnation of a well-known game, made by UROBBYU just for fun",
     "icons": [
         {
-            "src": "img/icon-32.png",
-            "sizes": "32x32",
-            "type": "image/png"
-        },{
-            "src": "img/icon-64.png",
-            "sizes": "64x64",
-            "type": "image/png"
-        },{
-            "src": "img/icon-96.png",
-            "sizes": "96x96",
-            "type": "image/png"
-        },{
-            "src": "img/icon-128.png",
-            "sizes": "128x128",
-            "type": "image/png"
-        },{
-            "src": "img/icon-168.png",
-            "sizes": "168x168",
-            "type": "image/png"
-        },{
             "src": "img/icon-192.png",
             "sizes": "192x192",
-            "type": "image/png"
-        },{
-            "src": "img/icon-256.png",
-            "sizes": "256x256",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "maskable any"
         },{
             "src": "img/icon-512.png",
             "sizes": "512x512",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "maskable any"
         }
     ],
     "start_url": "/Minesweeper/index.html",
-    "display": "fullscreen",
-    "theme_color": "#191919",
-    "background_color": "#191919"
+    "display": "standalone",
+    "theme_color": "#444444",
+    "background_color": "#444444"
 }
