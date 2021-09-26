@@ -4,6 +4,8 @@ let field = document.getElementById('field');
 
 let msgBox = document.getElementById('hud');
 
+document.addEventListener('contextmenu', e => e.preventDefault());
+
 msgBox.build = function(title, sub, input) {
     this.children.msg.style.color = title[0];
     this.children.msg.innerText = title[1];
@@ -264,6 +266,13 @@ function createCell(x, y, options) {
         updateTable();
     }
 
+    function clickR() {
+        table[x][y].data.type = table[x][y].data.type == 'block' ? 'flag' : 'block';
+        redrawAdjusted(x, y, 'octal');
+        navigator.vibrate(50);
+        return false;
+    }
+
     function clickL() {
         if (table[x][y].data.type === 'block') {
             if (!table.started) {
@@ -315,15 +324,35 @@ function createCell(x, y, options) {
         }
     }
 
-    function clickR() {
-        table[x][y].data.type = table[x][y].data.type == 'block' ? 'flag' : 'block';
-        redrawAdjusted(x, y, 'octal');
-        navigator.vibrate(50);
-        return false;
-    }
+    elem.addEventListener('mousedown', e => {
+        if (e.button == 0) clickL()
+        else if (e.button == 2) clickR()
+    })
+
+    let holdID
+    let doLeft
+
+    elem.addEventListener('touchstart', () => {
+        doLeft = true
+        holdID = setTimeout(() => {
+            doLeft = false
+            clickR()
+        }, 500)
+    })
+
+    elem.addEventListener('touchend', () => {
+        if (doLeft) {
+            clearTimeout(holdID)
+            clickL()
+        }
+    })
+
+    elem.addEventListener('touchmove', () => {
+        doLeft = false
+        clearTimeout(holdID)
+    })
     
     elem.onclick = clickL;
-    elem.oncontextmenu = clickR;
 
     return elem;
 }

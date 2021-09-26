@@ -5,8 +5,6 @@
     --cell-color: #988d62;
     --cell-border-size: 5px;
     --flag-color: grey;
-    --x: 0;
-    --y: 0;
 }
 
 body {
@@ -18,6 +16,8 @@ body {
 }
 
 #field {
+    --x: 0;
+    --y: 0;
     width: 100vw;
     height: 100vh;
     position: absolute;
@@ -204,29 +204,27 @@ body {
 }
 
 #hud {
-    --min: min(1vw, 1vh);
-    --max: max(1vw, 1vh);
     --bg-color: #4ebdff;
     --bd-color: #117bbb;
     position: sticky;
     z-index: 2;
-    left: calc(50vw - var(--min) * 25);
-    margin-top: calc(50vh - var(--min) * 8);
-    width: calc(var(--min) * 50);
+    left: calc(50vw - 25vmin);
+    margin-top: calc(50vh - 8vmin);
+    width: 50vmin;
     background-color: var(--bg-color);        /*#ff8300 | #4ebdff | #19d525*/
-    border: var(--min) solid var(--bd-color); /*#aa5516 | #117bbb | #52aa16*/
-    border-radius: calc(var(--min) * 2);
-    padding: var(--min);
+    border: 1vmin solid var(--bd-color); /*#aa5516 | #117bbb | #52aa16*/
+    border-radius: 2vmin;
+    padding: 1vmin;
     overflow: hidden;
 }
 
 #msg {
 	width: 100%;
 	text-align: center;
-	font-size: calc(var(--min) * 3.5);
+	font-size: 3.5vmin;
 	font-family: sans-serif;
     font-weight: bold;
-	padding: var(--min) 0;
+	padding: 1vmin 0;
 }
 
 #submsg {
@@ -234,10 +232,10 @@ body {
     justify-content: space-around;
 	width: 100%;
 	text-align: center;
-	font-size: calc(var(--min) * 1.5);
+	font-size: 1.5vmin;
 	font-family: sans-serif;
     font-weight: bold;
-	padding: var(--min) 0;
+	padding: 1vmin 0;
 	border-top: 2px solid black;
 }
 
@@ -257,29 +255,30 @@ body {
 }
 
 #input > * {
-    margin-top: calc(var(--min) * 1.5);
+    margin-top: 1.5vmin;
 	font-weight: bold;
-	padding: var(--min);
+	padding: 1vmin;
 	font-family: sans-serif;
 }
 
 #input > *.label {
     color: var(--color);
-    font-size: calc(var(--min) * 1.7);
+    font-size: 1.7vmin;
 }
 
 #input > *.delimiter {
     width: 5%;
+    height: 0;
     opacity: 0;
     pointer-events: none;
 }
 
 #input > *.number {
-    margin-top: calc(var(--min) * 2.3);
-    padding: calc(var(--min) * 0.5);
-    width: calc(var(--min) * 2.5);
-    height: calc(var(--min) * 1);
-    font-size: calc(var(--min) * 1.5);
+    margin-top: 2.3vmin;
+    padding: 0.5vmin;
+    width: 2.5vmin;
+    height: 1vmin ;
+    font-size: 1.5vmin ;
     -moz-appearance: textfield;
 }
 
@@ -293,9 +292,9 @@ body {
 	text-transform: uppercase;
 	color: var(--color);
 	background-color: cadetblue;
-	border: solid var(--color);
-	border-radius: calc(var(--min) * 1.6);
-	font-size: calc(var(--min) * 1.7);
+	border: 0.4vmin solid var(--color);
+	border-radius: 1.6vmin;
+	font-size: 1.7vmin;
 }
 
 #input > *.button:active {
