@@ -6,34 +6,54 @@ let msgBox = document.getElementById('hud');
 
 document.addEventListener('contextmenu', e => e.preventDefault());
 
+function createElement(html) {
+    const tmp = document.createElement('template')
+    tmp.innerHTML = html.trim()
+    return tmp.content.firstChild
+}
+
 msgBox.build = function(title, sub, input) {
     this.children.msg.style.color = title[0];
     this.children.msg.innerText = title[1];
 
     this.children.submsg.innerHTML = '';
-    for (let i = 0; i < sub.length; i++) {
-        let span = document.createElement('span');
-        span.style.color = sub[i];
-        span.innerText = sub[++i];
-        this.children.submsg.appendChild(span);
-    }
+    for (let i = 0; i < sub.length; i++) this.children.submsg.appendChild(createElement(`<span style="color:${sub[i]}"">${sub[++i]}</span>`));
     this.children.submsg.style.display = (this.children.submsg.innerHTML === '' ? 'none' : '');
 
     this.children.input.innerHTML = '';
-    for (let data of input) {
-        let elem = document.createElement(data.type === 'number' ? 'input' : 'span');
-        elem.className = data.type;
-        elem.style.setProperty('--color', data.color);
-        elem.style.setProperty('--subcolor', data.subcolor);
-        elem.onclick = data.action;
-        if (data.type === 'number') {
-            elem.type = 'number';
-            elem.value = data.value;
-            elem.min = data.min;
-            elem.max = data.max;
-        } else elem.innerText = data.text;
 
-        this.children.input.appendChild(elem);
+    this.children.input.appendChild(createElement('<span class="delimiter"></span>'));
+    for (const arr of input) {
+        let section = createElement('<span class="section"></span>');
+        if (arr.type) {
+            const elem = document.createElement(arr.type === 'number' ? 'input' : 'span');
+            elem.className = arr.type;
+            elem.style.setProperty('--color', arr.color);
+            elem.style.setProperty('--subcolor', arr.subcolor);
+            elem.onclick = arr.action;
+            if (arr.type === 'number') {
+                elem.type = 'number';
+                elem.value = arr.value;
+                elem.min = arr.min;
+                elem.max = arr.max;
+            } else elem.innerText = arr.text;
+            section = elem;
+        } else for (const data of arr) {
+            const elem = document.createElement(data.type === 'number' ? 'input' : 'span');
+            elem.className = data.type;
+            elem.style.setProperty('--color', data.color);
+            elem.style.setProperty('--subcolor', data.subcolor);
+            elem.onclick = data.action;
+            if (data.type === 'number') {
+                elem.type = 'number';
+                elem.value = data.value;
+                elem.min = data.min;
+                elem.max = data.max;
+            } else elem.innerText = data.text;
+            section.appendChild(elem);
+        }
+        this.children.input.appendChild(section);
+        this.children.input.appendChild(createElement('<span class="delimiter"></span>'));
     }
     this.children.input.style.display = (this.children.input.innerHTML === '' ? 'none' : '');
 }
@@ -337,7 +357,7 @@ function createCell(x, y, options) {
         holdID = setTimeout(() => {
             doLeft = false
             clickR()
-        }, 500)
+        }, 400)
     })
 
     elem.addEventListener('touchend', () => {
@@ -477,9 +497,8 @@ function solve(x, y) { // 0 - value, 1 - mine, 2 - unsolved
 
 msgBox.build(
     ['white', 'Create Field:'],
-    [], [{
-        type: 'delimiter'
-    },{
+    [], [
+    [{
         type: 'label',
         text: 'Size:'
     },{
@@ -495,9 +514,7 @@ msgBox.build(
         value: 15,
         min: 3,
         max: 50
-    },{
-        type: 'delimiter'
-    },{
+    }],[{
         type: 'label',
         text: 'Difficulty:'
     },{
@@ -505,9 +522,7 @@ msgBox.build(
         value: 15,
         min: 0,
         max: 100
-    },{
-        type: 'delimiter'
-    },{
+    }],{
         type: 'button',
         text: 'start',
         color: 'lime',
@@ -522,7 +537,5 @@ msgBox.build(
             redrawTable();
             msgBox.style.display = 'none';
         }
-    },{
-        type: 'delimiter'
     }]
 );
