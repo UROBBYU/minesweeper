@@ -207,7 +207,7 @@ body {
     --vmin: max(1vmin, 6px);
     --bg-color: #4ebdff;
     --bd-color: #117bbb;
-    position: sticky;
+    position: fixed;
     z-index: 2;
     left: calc(50vw - 27 * var(--vmin));
     margin-top: calc(50vh - 8 * var(--vmin));
